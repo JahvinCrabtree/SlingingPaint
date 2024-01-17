@@ -36,23 +36,45 @@ userPaintSelection = (input("""Which paint would you like?
 
 selectedPaint = None
 
-if userPaintSelection == 'A':
-    selectedPaint = "Simply Paint"
-elif userPaintSelection == 'B':
-    selectedPaint = "Dontlux"
-elif userPaintSelection == 'C':
-    selectedPaint = "DatGoodGood"
-else:
-    print("Invalid selection. Please choose A, B, or C.")
+while selectedPaint is None:
+    selectedPaint = input("Please select a paint option (A, B, or C): ")
 
-numerOfWalls = None
+    if selectedPaint not in ['A', 'B', 'C']:
+        print("Invalid selection. Please choose A, B, or C.")
+        selectedPaint = None 
 
 wallChoice = """Now you've selected your paint type, 
 how many walls will you be painting?"""
 print(wallChoice)
 print()
 
-numberOfWallsSelection = (input(int(("Please enter a whole number"))))
+numberOfWalls = None
+
+while numberOfWalls is None:
+    try:
+        numberOfWalls = int(input("Please enter the amount of walls: "))
+        if 0 <= numberOfWalls < 100:
+            # No need to assign to numberOfWallsSelection, directly use numberOfWalls
+            pass  # You can add more logic here if needed
+        else:
+            print("Please enter a whole number less than 100.")
+    except ValueError:
+        print("Invalid input. Please enter a whole number.")
+
+print("Do these walls have any obstructions? Windows etc. ")
+print()
+
+hasObstruction = None
+
+while hasObstruction is None:
+    hasObstruction = input("Please enter Y or N: ")
+    if hasObstruction not in['Y', 'N']:
+        print("Invalid selection, try again.")
+        hasObstruction = None
+
+
+
+
 
 
 
