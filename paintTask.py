@@ -1,10 +1,21 @@
 import math #Numbers and that.
 
-def calculateArea(length, width):
-    return length * width
+def calculateArea(length, height):
+    return length * height
 
 def calculateAreaCircle(radius):
     return math.pi * radius**2 # ** 2 means squared. 
+
+def totalCost(wallArea, numberOfWalls, selectedPaint):
+    if selectedPaint == "Simply Paint":
+        cost_per_square_unit = 10
+    elif selectedPaint == "Dontlux":
+        cost_per_square_unit = 20
+    else:
+        cost_per_square_unit = 30
+    
+    total_cost = wallArea * numberOfWalls * cost_per_square_unit
+    return total_cost
 
 print()
 
@@ -21,18 +32,13 @@ print()
 
 paintOptions = """We have 3 different options of paint here
 
-A) Simply Paint - £3 for .5 Litres, £10 for 2.5 Litres, £15 for 4 Litres.
-B) Dontlux - £6 for .5 Litres, £20 for 2.5 Litres, £30 for 4 Litres.
-C) DatGoodGood - £9 for .5 Litres, £30 for 2.5 Litres, £45 for 4 Litres. 
+A) Simply Paint - £10 for 2.5 Litres.
+B) Dontlux - £20 for 2.5 Litres.
+C) DatGoodGood - £30 for 2.5 Litres.
 
 The more premium options of paint give for a better finish and makes a house a home. """
 print(paintOptions)
 print()
-
-userPaintSelection = (input("""Which paint would you like?
-                            A
-                            B
-                            C"""))
 
 selectedPaint = None
 
@@ -42,6 +48,7 @@ while selectedPaint is None:
     if selectedPaint not in ['A', 'B', 'C']:
         print("Invalid selection. Please choose A, B, or C.")
         selectedPaint = None 
+print()
 
 wallChoice = """Now you've selected your paint type, 
 how many walls will you be painting?"""
@@ -72,12 +79,11 @@ while hasObstruction is None:
         print("Invalid selection, try again.")
         hasObstruction = None
 
-
-
-
-
-
-
 height = float(input("Please enter the height of your wall to a single decimal place "))
 length = float(input("Please enter the length of your wall to a single decimal place "))
+
+wallArea = calculateArea(height, length)
+
+sum = totalCost(wallArea, numberOfWalls, selectedPaint)
+print ("That'll be the very affordable price of £" + str(sum))
 
