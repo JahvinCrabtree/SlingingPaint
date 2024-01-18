@@ -1,4 +1,4 @@
-import math
+import math # </3
 class PaintSlingers:
     def __init__(self):
         self.selectedPaint = None
@@ -16,8 +16,8 @@ class PaintSlingers:
         return 0.5 * base * height
 
     def totalCost(self, paintRequired, costPerUnit=None):
-        while costPerUnit is None and self.selectedPaint not in {'A', 'B', 'C'}:
-            self.selectedPaint = input("Invalid paint selection. Please select a valid paint option (A, B, or C): ").upper()
+        while costPerUnit is None or self.selectedPaint not in {'A', 'B', 'C'}:
+            self.selectedPaint = input("Please select a valid paint option (A, B, or C): ").upper()
             if self.selectedPaint == "A":
                 costPerUnit = 4.16 / 2.5
             elif self.selectedPaint == "B":
@@ -42,42 +42,60 @@ class PaintSlingers:
         print()
 
     def getWallInfo(self):
-        self.numberOfWalls = int(input("Please enter the amount of walls: "))
-        if not (0 <= self.numberOfWalls < 100):
-            print("Please enter a whole number less than 100.")
+        while True:
+            try:
+                self.numberOfWalls = int(input("Please enter the amount of walls: "))
+                if 0 <= self.numberOfWalls < 100:
+                    break  # Exit the loop if the input is valid
+                else:
+                    print("Please enter a whole number less than 100.")
+            except ValueError:
+                print("Invalid input. Please enter a valid integer.")
 
     def getObstructionInfo(self):
         self.hasObstruction = input("Is there an obstruction? (Y/N): ").upper()
         validObstruction = False
         
-        while not validObstruction:
+    def getObstructionInfo(self):
+        try:
+            self.hasObstruction = input("Is there an obstruction? (Y/N): ").upper()
+
             if self.hasObstruction == 'Y':
-                obstructionType = input("Is the obstruction round, rectangle, triangle, or none? (Type 'round', 'rectangle' or 'triangle'): ").lower()
-
-                radius = 0
-                obstructionLength = 0
-                obstructionHeight = 0
-
-                match obstructionType:
-                    case 'round':
-                        radius = float(input("Enter the radius of the round obstruction: "))
-                        self.obstructionArea = self.calculateAreaCircle(radius)
-                        validObstruction = True
-                    case 'rectangle':
-                        obstructionLength = float(input("Enter the length of the rectangle obstruction: "))
-                        obstructionHeight = float(input("Enter the height of the rectangle obstruction: "))
-                        self.obstructionArea = self.calculateArea(obstructionLength, obstructionHeight)
-                        validObstruction = True
-                    case 'triangle':
-                        base = float(input("Enter the base length of the triangular obstruction: "))
-                        height = float(input("Enter the height of the triangular obstruction: "))
-                        self.obstructionArea = self.calculateTriangleArea(base, height)
-                        validObstruction = True
-                    case _:
-                        print("Invalid obstruction type. Please enter 'round', 'rectangle' or 'triangle'")
-            else:
+                validObstruction = True  # Set this to True to break out of the loop
+            elif self.hasObstruction == 'N':
                 self.obstructionArea = 0
                 validObstruction = True
+            else:
+                print("Please, enter Y or N")
+                return  # Return to the caller if the input is neither 'Y' nor 'N'
+        except ValueError:
+            print("Invalid input. Please enter a valid input.")
+            return  # Return to the caller if a ValueError occurs
+
+        # Now, handle the obstruction type input
+        try:
+            obstructionType = input("Is the obstruction round, rectangle, triangle, or none? (Type 'round', 'rectangle' or 'triangle'): ").lower()
+
+            radius = 0
+            obstructionLength = 0
+            obstructionHeight = 0
+
+            match obstructionType:
+                case 'round':
+                    radius = float(input("Enter the radius of the round obstruction: "))
+                    self.obstructionArea = self.calculateAreaCircle(radius)
+                case 'rectangle':
+                    obstructionLength = float(input("Enter the length of the rectangle obstruction: "))
+                    obstructionHeight = float(input("Enter the height of the rectangle obstruction: "))
+                    self.obstructionArea = self.calculateArea(obstructionLength, obstructionHeight)
+                case 'triangle':
+                    base = float(input("Enter the base length of the triangular obstruction: "))
+                    height = float(input("Enter the height of the triangular obstruction: "))
+                    self.obstructionArea = self.calculateTriangleArea(base, height)
+                case _:
+                    print("Invalid obstruction type. Please enter 'round', 'rectangle' or 'triangle'")
+        except ValueError:
+            print("Invalid input. Please enter a valid input.")
 
     def calculatePaintRequired(self):
         self.wallArea = self.calculateArea(height, length) * numberOfWalls
@@ -87,12 +105,13 @@ class PaintSlingers:
 
     def calculateTotalCost(self):
         paintRequired = self.calculatePaintRequired()
-        costPerUnit = None # totalcost solves this
+        costPerUnit = None # totalcost solves thispytho
         return round(self.totalCost(paintRequired, costPerUnit), 2)
 
 
 
-greeting = """Hello, welcome to PaintSlingers LTD.
+greeting = """
+Hello, welcome to B&Q.
 We got paint, and lots of it.
 
 """
@@ -100,13 +119,12 @@ print(greeting)
 
 paintSlingers = PaintSlingers()
 paintSlingers.getPaintOptions()
-paintSlingers.selectedPaint = input("Please select a paint option (A, B, or C): ").upper()
 
 paintSlingers.getWallInfo()
 paintSlingers.getObstructionInfo()
 
-height = float(input("Please enter the height of your wall: "))
-length = float(input("Please enter the length of your wall: "))
+height = float(input("Please enter the height of your wall in meters: "))
+length = float(input("Please enter the length of your wall in meters: "))
 print()
 
 numberOfWalls = paintSlingers.numberOfWalls
