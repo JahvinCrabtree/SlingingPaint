@@ -31,18 +31,18 @@ class PaintSlingers:
     def getPaintOptions(self):
         paintOptions = """We have 3 different options of paint here
 
-        A) Simply Paint - £10 for 2.5 Litres.
-        B) Dontlux - £20 for 2.5 Litres.
-        C) DatGoodGood - £30 for 2.5 Litres.
+        A) Leyland - £4.16 for 2.5 Litres.
+        B) Dulux - £22 for 2.5 Litres.
+        C) YesColours - £68.75 for 2.5 Litres.
 
-        The more premium options of paint give for a better finish and makes a house a home. """
+        The more premium options of paint have a better longevity"""
         print(paintOptions)
         print()
 
     def getWallInfo(self):
         self.numberOfWalls = int(input("Please enter the amount of walls: "))
         if not (0 <= self.numberOfWalls < 100):
-            print("Please enter a whole number less than 100.")
+            print("This can only process upto 100 rooms, please select a nubmer below that.")
 
     def getObstructionInfo(self):
         self.hasObstruction = input("Is there an obstruction? (Y/N): ").upper()
@@ -91,7 +91,7 @@ class PaintSlingers:
 
 
 
-greeting = """Hello, welcome to PaintSlingers LTD.
+greeting = """Hello, welcome to B & Q.
 We got paint, and lots of it.
 
 """
