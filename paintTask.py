@@ -79,6 +79,7 @@ class PaintSlingers:
 
     def calculatePaintRequired(self):
         self.wallArea = self.calculateArea(height, length) * numberOfWalls
+        self.wallArea -= self.obstructionArea
         paintRequired = self.wallArea / 12.5
         return round(paintRequired, 1)
 
