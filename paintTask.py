@@ -1,89 +1,104 @@
-import math #Numbers and that.
+import math
 
-def calculateArea(length, height):
-    return length * height
+class PaintSlingers:
+    def __init__(self):
+        self.selectedPaint = None
+        self.numberOfWalls = None
+        self.wallArea = None
+        self.hasObstruction = None
 
-def calculateAreaCircle(radius):
-    return math.pi * radius**2 # ** 2 means squared. 
+    def calculateArea(self, length, height):
+        return length * height
 
-def totalCost(wallArea, numberOfWalls, selectedPaint):
-    if selectedPaint == "Simply Paint":
-        cost_per_square_unit = 10
-    elif selectedPaint == "Dontlux":
-        cost_per_square_unit = 20
-    else:
-        cost_per_square_unit = 30
+    def calculateAreaCircle(self, radius):
+        return math.pi * radius**2
+
+    def calculateTriangleArea(self, base, height):
+        return 0.5 * base * height
+
+    def totalCost(self, paintRequired, costPerUnit, numberOfWalls):
+        if self.selectedPaint == "Simply Paint":
+            costPerUnit = 10
+        elif self.selectedPaint == "Dontlux":
+            costPerUnit = 20
+        else:
+            costPerUnit = 30
     
-    total_cost = wallArea * numberOfWalls * cost_per_square_unit
-    return total_cost
+        totalCost = ((paintRequired / 2.5) * costPerUnit) * numberOfWalls
+        return totalCost
 
-print()
+    def getPaintOptions(self):
+        paintOptions = """We have 3 different options of paint here
+
+        A) Simply Paint - £10 for 2.5 Litres.
+        B) Dontlux - £20 for 2.5 Litres.
+        C) DatGoodGood - £30 for 2.5 Litres.
+
+        The more premium options of paint give for a better finish and makes a house a home. """
+        print(paintOptions)
+        print()
+
+    def getWallInfo(self):
+        self.numberOfWalls = int(input("Please enter the amount of walls: "))
+        if not (0 <= self.numberOfWalls < 100):
+            print("Please enter a whole number less than 100.")
+
+    def getObstructionInfo(self):
+        self.hasObstruction = input("Is there an obstruction? (Y/N): ").upper()
+        validObstruction = False
+        
+        while not validObstruction:
+            if self.hasObstruction == 'Y':
+                obstructionType = input("Is the obstruction round, rectangle, triangle, or none? (Type 'round', 'rectangle' or 'triangle'): ").lower()
+
+                match obstructionType:
+                    case 'round':
+                        radius = float(input("Enter the radius of the round obstruction: "))
+                        self.obstructionArea = self.calculateAreaCircle(radius)
+                        validObstruction = True
+                        # Further logic for round obstruction
+                    case 'rectangle':
+                        obstructionLength = float(input("Enter the length of the rectangle obstruction: "))
+                        obstructionHeight = float(input("Enter the height of the rectangle obstruction: "))
+                        self.obstructionArea = self.calculateArea(obstructionLength, obstructionHeight)
+                        validObstruction = True
+                        # Further logic for rectangle obstruction
+                    case 'triangle':
+                        base = float(input("Enter the base length of the triangular obstruction: "))
+                        height = float(input("Enter the height of the triangular obstruction: "))
+                        validObstruction = True
+                        # Further logic for triangular obstruction
+                    case _:
+                        print("Invalid obstruction type. Please enter 'round', 'rectangle' or 'triangle'")
+
+    def calculatePaintRequired(self):
+        self.wallArea = self.calculateArea(height, length)
+        paintRequired = self.wallArea / 12.5
+        return round(paintRequired, 1)
+
+    def calculateTotalCost(self):
+        return round(self.totalCost(self.wallArea, self.selectedPaint), 2)
+
+
 
 greeting = """Hello, welcome to PaintSlingers LTD.
-We got paint, and lots of it."""
+We got paint, and lots of it.
+
+"""
 print(greeting)
-#empty line simulator.
+
+paintSlingers = PaintSlingers()
+paintSlingers.getPaintOptions()
+paintSlingers.selectedPaint = input("Please select a paint option (A, B, or C): ")
+
+paintSlingers.getWallInfo()
+paintSlingers.getObstructionInfo()
+
+height = float(input("Please enter the height of your wall: "))
+length = float(input("Please enter the length of your wall: "))
 print()
 
-parameters = """When painting a wall you should know to cover 12sqm of wall,
-you need 1l of paint, take that into consideration when purchasing. :)"""
-print(parameters)
-print()
+paintRequired = paintSlingers.calculatePaintRequired()
+totalCost = paintSlingers.calculateTotalCost()
 
-paintOptions = """We have 3 different options of paint here
-
-A) Simply Paint - £10 for 2.5 Litres.
-B) Dontlux - £20 for 2.5 Litres.
-C) DatGoodGood - £30 for 2.5 Litres.
-
-The more premium options of paint give for a better finish and makes a house a home. """
-print(paintOptions)
-print()
-
-selectedPaint = None
-
-while selectedPaint is None:
-    selectedPaint = input("Please select a paint option (A, B, or C): ")
-
-    if selectedPaint not in ['A', 'B', 'C']:
-        print("Invalid selection. Please choose A, B, or C.")
-        selectedPaint = None 
-print()
-
-wallChoice = """Now you've selected your paint type, 
-how many walls will you be painting?"""
-print(wallChoice)
-print()
-
-numberOfWalls = None
-
-while numberOfWalls is None:
-    try:
-        numberOfWalls = int(input("Please enter the amount of walls: "))
-        if 0 <= numberOfWalls < 100:
-            # No need to assign to numberOfWallsSelection, directly use numberOfWalls
-            pass  # You can add more logic here if needed
-        else:
-            print("Please enter a whole number less than 100.")
-    except ValueError:
-        print("Invalid input. Please enter a whole number.")
-
-print("Do these walls have any obstructions? Windows etc. ")
-print()
-
-hasObstruction = None
-
-while hasObstruction is None:
-    hasObstruction = input("Please enter Y or N: ")
-    if hasObstruction not in['Y', 'N']:
-        print("Invalid selection, try again.")
-        hasObstruction = None
-
-height = float(input("Please enter the height of your wall to a single decimal place "))
-length = float(input("Please enter the length of your wall to a single decimal place "))
-
-wallArea = calculateArea(height, length)
-
-sum = totalCost(wallArea, numberOfWalls, selectedPaint)
-print ("That'll be the very affordable price of £" + str(sum))
-
+print(f"The amount of paint required is: {paintRequired} Litres, And that'll cost the very affordable price of £{totalCost}")
