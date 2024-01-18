@@ -16,14 +16,15 @@ class PaintSlingers:
     def calculateTriangleArea(self, base, height):
         return 0.5 * base * height
 
-    def totalCost(self, paintRequired, costPerUnit, numberOfWalls):
-        if self.selectedPaint == "Simply Paint":
-            costPerUnit = 10
-        elif self.selectedPaint == "Dontlux":
-            costPerUnit = 20
-        else:
-            costPerUnit = 30
-    
+    def totalCost(self, paintRequired, costPerUnit=None, numberOfWalls=None):
+        if costPerUnit is None:
+            if self.selectedPaint == "Simply Paint":
+                costPerUnit = 10
+            elif self.selectedPaint == "Dontlux":
+                costPerUnit = 20
+            else:
+                costPerUnit = 30
+
         totalCost = ((paintRequired / 2.5) * costPerUnit) * numberOfWalls
         return totalCost
 
@@ -51,33 +52,41 @@ class PaintSlingers:
             if self.hasObstruction == 'Y':
                 obstructionType = input("Is the obstruction round, rectangle, triangle, or none? (Type 'round', 'rectangle' or 'triangle'): ").lower()
 
+                radius = 0
+                obstructionLength = 0
+                obstructionHeight = 0
+
                 match obstructionType:
                     case 'round':
                         radius = float(input("Enter the radius of the round obstruction: "))
                         self.obstructionArea = self.calculateAreaCircle(radius)
                         validObstruction = True
-                        # Further logic for round obstruction
                     case 'rectangle':
                         obstructionLength = float(input("Enter the length of the rectangle obstruction: "))
                         obstructionHeight = float(input("Enter the height of the rectangle obstruction: "))
                         self.obstructionArea = self.calculateArea(obstructionLength, obstructionHeight)
                         validObstruction = True
-                        # Further logic for rectangle obstruction
                     case 'triangle':
                         base = float(input("Enter the base length of the triangular obstruction: "))
                         height = float(input("Enter the height of the triangular obstruction: "))
+                        self.obstructionArea = self.calculateTriangleArea(base, height)
                         validObstruction = True
-                        # Further logic for triangular obstruction
                     case _:
                         print("Invalid obstruction type. Please enter 'round', 'rectangle' or 'triangle'")
+            else:
+                self.obstructionArea = 0
+                validObstruction = True
 
     def calculatePaintRequired(self):
-        self.wallArea = self.calculateArea(height, length)
+        self.wallArea = self.calculateArea(height, length) * numberOfWalls
         paintRequired = self.wallArea / 12.5
         return round(paintRequired, 1)
 
     def calculateTotalCost(self):
-        return round(self.totalCost(self.wallArea, self.selectedPaint), 2)
+        paintRequired = self.calculatePaintRequired()
+        numberOfWalls = self.numberOfWalls
+        costPerUnit = None # totalcost solves this
+        return round(self.totalCost(paintRequired, costPerUnit, numberOfWalls), 2)
 
 
 
@@ -98,7 +107,9 @@ height = float(input("Please enter the height of your wall: "))
 length = float(input("Please enter the length of your wall: "))
 print()
 
+numberOfWalls = paintSlingers.numberOfWalls
+
 paintRequired = paintSlingers.calculatePaintRequired()
 totalCost = paintSlingers.calculateTotalCost()
 
-print(f"The amount of paint required is: {paintRequired} Litres, And that'll cost the very affordable price of £{totalCost}")
+print(f"The amount of paint required is: {paintRequired} Litres, And that'll cost the very affordable price of £{totalCost:.2f}")
