@@ -1,5 +1,4 @@
 import math
-
 class PaintSlingers:
     def __init__(self):
         self.selectedPaint = None
@@ -16,16 +15,19 @@ class PaintSlingers:
     def calculateTriangleArea(self, base, height):
         return 0.5 * base * height
 
-    def totalCost(self, paintRequired, costPerUnit=None, numberOfWalls=None):
-        if costPerUnit is None:
-            if self.selectedPaint == "Simply Paint":
-                costPerUnit = 10
-            elif self.selectedPaint == "Dontlux":
-                costPerUnit = 20
+    def totalCost(self, paintRequired, costPerUnit=None):
+        while costPerUnit is None and self.selectedPaint not in {'A', 'B', 'C'}:
+            self.selectedPaint = input("Invalid paint selection. Please select a valid paint option (A, B, or C): ").upper()
+            if self.selectedPaint == "A":
+                costPerUnit = 4.16 / 2.5
+            elif self.selectedPaint == "B":
+                costPerUnit = 22 / 2.5
+            elif self.selectedPaint == "C":
+                costPerUnit = 68.75 / 2.5
             else:
-                costPerUnit = 30
+                print("Invalid input. Please select a valid paint option (A, B, or C): ")
 
-        totalCost = ((paintRequired / 2.5) * costPerUnit) * numberOfWalls
+        totalCost = (paintRequired * costPerUnit)
         return totalCost
 
     def getPaintOptions(self):
@@ -42,7 +44,7 @@ class PaintSlingers:
     def getWallInfo(self):
         self.numberOfWalls = int(input("Please enter the amount of walls: "))
         if not (0 <= self.numberOfWalls < 100):
-            print("This can only process upto 100 rooms, please select a nubmer below that.")
+            print("Please enter a whole number less than 100.")
 
     def getObstructionInfo(self):
         self.hasObstruction = input("Is there an obstruction? (Y/N): ").upper()
@@ -85,13 +87,12 @@ class PaintSlingers:
 
     def calculateTotalCost(self):
         paintRequired = self.calculatePaintRequired()
-        numberOfWalls = self.numberOfWalls
         costPerUnit = None # totalcost solves this
-        return round(self.totalCost(paintRequired, costPerUnit, numberOfWalls), 2)
+        return round(self.totalCost(paintRequired, costPerUnit), 2)
 
 
 
-greeting = """Hello, welcome to B & Q.
+greeting = """Hello, welcome to PaintSlingers LTD.
 We got paint, and lots of it.
 
 """
@@ -99,7 +100,7 @@ print(greeting)
 
 paintSlingers = PaintSlingers()
 paintSlingers.getPaintOptions()
-paintSlingers.selectedPaint = input("Please select a paint option (A, B, or C): ")
+paintSlingers.selectedPaint = input("Please select a paint option (A, B, or C): ").upper()
 
 paintSlingers.getWallInfo()
 paintSlingers.getObstructionInfo()
